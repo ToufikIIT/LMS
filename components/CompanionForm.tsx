@@ -35,7 +35,12 @@ const formSchema = z.object({
 
 const CompanionForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+    // zodResolver can produce a Resolver type that is incompatible with
+    // react-hook-form's inferred generics when using z.coerce.number().
+    // Cast to `any` here as a minimal fix; this keeps runtime behavior
+    // (coercion) while avoiding a type mismatch. We can tighten types
+    // later if desired.
+    resolver: zodResolver(formSchema) as any,
     defaultValues: {
       name: "",
       subject: "",
