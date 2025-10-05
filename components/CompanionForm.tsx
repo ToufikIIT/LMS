@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "./ui/textarea";
 import { subjects } from "@/constants";
+import { createCompanion } from "@/lib/actions/companion.action";
+import { redirect } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Companion is required." }),
@@ -35,11 +37,6 @@ const formSchema = z.object({
 
 const CompanionForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
-    // zodResolver can produce a Resolver type that is incompatible with
-    // react-hook-form's inferred generics when using z.coerce.number().
-    // Cast to `any` here as a minimal fix; this keeps runtime behavior
-    // (coercion) while avoiding a type mismatch. We can tighten types
-    // later if desired.
     resolver: zodResolver(formSchema) as any,
     defaultValues: {
       name: "",
@@ -51,8 +48,14 @@ const CompanionForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const companion = await createCompanion(values);
+     if(companion) {
+            redirect(`/companions/${companion.id}`);
+        } else {
+            console.log('Failed to create a companion');
+            redirect('/');
+        }
   };
 
   return (
