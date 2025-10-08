@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import soundwaves from "@/constants/soundwaves.json";
 import { vapi } from "@/lib/vapi.sdk";
 import { on } from "events";
+import { addToSessionHistory } from "@/lib/actions/companion.action";
 
 enum CallStatus {
   INACTIVE = "INACTIVE",
@@ -47,6 +48,7 @@ const CompanionComponent = ({
 
     const onCallEnd = () => {
       setCallStatus(CallStatus.FINISHED);
+      addToSessionHistory(companionId);
     };
     const onMessage = (message: Message) => {
             if(message.type === 'transcript' && message.transcriptType === 'final') {
