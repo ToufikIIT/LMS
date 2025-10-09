@@ -1,4 +1,4 @@
-/* import {createClient} from "@supabase/supabase-js";
+import {createClient} from "@supabase/supabase-js";
 import {auth} from "@clerk/nextjs/server";
 
 export const createSupabaseClient = () => {
@@ -10,9 +10,9 @@ export const createSupabaseClient = () => {
             }
         }
     )
-} */
+} 
 
-import { createClient } from "@supabase/supabase-js";
+/* import { createClient } from "@supabase/supabase-js";
 
 // Create a Supabase client. If a Clerk access token is provided it will be
 // attached to requests so RLS policies requiring an authenticated user work.
@@ -29,3 +29,4 @@ export const createSupabaseClient = (token?: string) => {
 
   return createClient(url, anonKey, options);
 };
+ */
